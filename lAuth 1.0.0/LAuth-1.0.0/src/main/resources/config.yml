@@ -1,0 +1,317 @@
+﻿##########################################################################
+#
+#   lAuth - Giris & Kayit Dialog Sistemi
+#   LOURSA PROJECT
+#   Gelistirici: xWeslayn
+#
+##########################################################################
+
+# ==================== LOGLAMA ====================
+logging:
+  # Giriş/kayıt/çıkış olaylarını konsola logla
+  enabled: true
+  # Log formatı
+  login: "[lAuth] %player% basariyla giris yapti. (IP: %ip%)"
+  register: "[lAuth] %player% yeni hesap olusturdu. (IP: %ip%)"
+  logout: "[lAuth] %player% cikis yapti."
+  failed-login: "[lAuth] %player% yanlis sifre girdi. (Deneme: %attempts%) (IP: %ip%)"
+  kick-timeout: "[lAuth] %player% sure doldugu icin atildi."
+  kick-attempts: "[lAuth] %player% cok fazla yanlis deneme yaptigi icin atildi."
+  rule-accepted: "[lAuth] %player% sunucu kurallarini kabul etti. (IP: %ip%, Tarih: %date%)"
+  rule-declined: "[lAuth] %player% sunucu kurallarini reddetti. (IP: %ip%, Tarih: %date%)"
+  password-changed: "[lAuth] %player% sifresini degistirdi. (IP: %ip%)"
+
+# ==================== GİRİŞ AYARLARI ====================
+auth:
+  min-password-length: 4
+  max-password-length: 30
+  # Giriş yapma süresi (saniye) - süre dolunca oyuncu atılır (0 = devre dışı)
+  login-timeout: 60
+  # Maksimum yanlış şifre denemesi (0 = sınırsız)
+  max-login-attempts: 5
+  # Oturum sistemi - aynı IP ile tekrar girişte şifre sorma (dakika, 0 = devre dışı)
+  session-timeout: 30
+  # Giriş yapmadan önce oyuncuya körlük efekti ver
+  blind-effect: true
+  # Giriş yapmadan önce oyuncuyu dondur (hareket engelle)
+  freeze-player: true
+  # Giriş yapmadan önce sohbeti engelle
+  block-chat: true
+  # Giriş yapmadan önce komutları engelle
+  block-commands: true
+  # İzin verilen komutlar (giriş yapmadan kullanılabilir)
+  allowed-commands:
+    - "/LAuth"
+    - "/ka"
+    - "/giris"
+    - "/kayit"
+    - "/cikis"
+    - "/login"
+    - "/register"
+    - "/logout"
+    - "/l"
+    - "/reg"
+    - "/maildogrula"
+    - "/mailkod"
+  # Zayıf şifreleri engelle (123456, qwerty, oyuncu adı vs.)
+  block-weak-passwords: true
+  # IP bazlı brute-force koruması - bu kadar denemeden sonra IP engellenir
+  max-ip-attempts: 20
+  # IP engellenme süresi (dakika)
+  ip-block-minutes: 10
+  # Aynı IP'den maksimum hesap sayısı (0 = sınırsız)
+  max-accounts-per-ip: 3
+  # Son giriş bilgisini göster (IP ve zaman)
+  show-last-login: true
+  # Timeout kick mesajı
+  timeout-kick-message: "<color:#FF6B6B>Giriş süresi doldu! Tekrar bağlanınız.</color>"
+  # Max deneme kick mesajı
+  max-attempts-kick-message: "<color:#FF6B6B>Çok fazla yanlış deneme! Tekrar bağlanınız.</color>"
+
+# ==================== DİALOG AYARLARI ====================
+dialog:
+  canCloseWithEscape: false
+  columns: 2
+
+# ==================== GİRİŞ DİALOGU ====================
+login:
+  title: "<color:#FF4D6D>ʟᴏᴜʀꜱᴀ</color> <color:#7F1D1D>│</color> <color:#FF6B6B>Giris Yap</color>"
+  body:
+    - ""
+    - "<gradient:#FF4D6D:#FF6B6B:#C1121F>ʟᴏᴜʀꜱᴀ ᴘʀᴏᴊᴇᴄᴛ</gradient>"
+    - ""
+    - "<color:#FFD1D1>Hos geldiniz! Hesabiniza giris yapiniz.</color>"
+    - ""
+  width: 200
+  actions:
+    - type: submit
+      label: "<color:#FF6B6B>Giris Yap</color>"
+  # İptal butonu
+  cancel-label: "<color:#FF6B6B>İptal</color>"
+
+# ==================== KAYIT DİALOGU ====================
+register:
+  title: "<color:#FF4D6D>ʟᴏᴜʀꜱᴀ</color> <color:#7F1D1D>│</color> <color:#FFB3C1>Kayit Ol</color>"
+  body:
+    - ""
+    - "<gradient:#FF4D6D:#FF6B6B:#C1121F>ʟᴏᴜʀꜱᴀ ᴘʀᴏᴊᴇᴄᴛ</gradient>"
+    - ""
+    - "<color:#FFD1D1>Yeni bir hesap olusturunuz.</color>"
+    - ""
+  width: 200
+  email_input:
+    enabled: true
+    label: "Gmail Adresi"
+  actions:
+    - type: submit
+      label: "<color:#FFB3C1>Kayit Ol</color>"
+  cancel-label: "<color:#FF6B6B>İptal</color>"
+
+# ==================== E-POSTA DOGRULAMA DİALOGU ====================
+email-verify:
+  title: "<color:#FF4D6D>ʟᴏᴜʀꜱᴀ</color> <color:#7F1D1D>│</color> <color:#FFB3C1>Mail Dogrulama</color>"
+  body:
+    - ""
+    - "<gradient:#FF4D6D:#FF6B6B:#C1121F>ʟᴏᴜʀꜱᴀ ᴘʀᴏᴊᴇᴄᴛ</gradient>"
+    - ""
+    - "<color:#FFD1D1>Mail adresinize gonderilen 6 haneli kodu girin.</color>"
+    - "<color:#E5989B>Kod gelmediyse /mailkod yazabilirsiniz.</color>"
+    - ""
+  width: 200
+  input-label: "Dogrulama Kodu"
+  submit-label: "<color:#FF6B6B>Dogrula</color>"
+  cancel-label: "<color:#FF6B6B>Iptal</color>"
+
+# ==================== MAIL AYARLARI ====================
+mail:
+  smtp:
+    host: "smtp.gmail.com"
+    port: "587"
+    user: ""
+    app-password: ""
+  from-name: "lAuth"
+  subject: "lAuth Mail Dogrulama Kodu"
+  code-expire-seconds: 300
+
+# ==================== KURAL DİALOGU ====================
+rule:
+  enabled: true
+  title: "<color:#FF4D6D>ʟᴏᴜʀꜱᴀ</color> <color:#7F1D1D>│</color> <color:#E5989B>Sunucu Kurallari</color>"
+  body:
+    - ""
+    - "<gradient:#FF4D6D:#FF6B6B:#C1121F>ʟᴏᴜʀꜱᴀ ᴘʀᴏᴊᴇᴄᴛ</gradient>"
+    - ""
+    - "<color:#FF6B6B>1.</color> <color:#FFD1D1>Hile, hack ve haksiz avantaj kullanimi yasaktir.</color>"
+    - "<color:#FF6B6B>2.</color> <color:#FFD1D1>Reklam yapmak ve spam atmak yasaktir.</color>"
+    - "<color:#FF6B6B>3.</color> <color:#FFD1D1>Diger oyunculara hakaret ve kufur yasaktir.</color>"
+    - "<color:#FF6B6B>4.</color> <color:#FFD1D1>Bug/acik kullanimi yasaktir, bildirin.</color>"
+    - "<color:#FF6B6B>5.</color> <color:#FFD1D1>Yetkililerin kararlarina saygi gosterin.</color>"
+    - ""
+    - "<color:#FFD1D1>Kurallari kabul etmek icin</color> <color:#FF6B6B>Onayla</color> <color:#FFD1D1>butonuna basin.</color>"
+  confirmButton: "<color:#FF6B6B>Onayla</color>"
+  # Kabul etmeme kick mesajı
+  decline-kick-message: "<color:#FF6B6B>Kuralları kabul etmediniz.</color>"
+  agree:
+    enabled: true
+    key: "agree"
+    label: "<color:#FFD1D1>Kurallari okudum ve kabul ediyorum</color>"
+
+# ==================== GÖRSEL EFEKTLER ====================
+effects:
+  # === Giriş yapmadan önce (bekleme ekranı) ===
+  waiting:
+    # Actionbar mesajı (sürekli gösterilir)
+    actionbar:
+      enabled: true
+      message: "<color:#FF6B6B>⚠</color> <color:#FFD1D1>Lutfen giris yapiniz veya kayit olunuz!</color> <color:#FF6B6B>⚠</color>"
+      update-ticks: 20
+    # Title (girişte bir kere gösterilir)
+    title:
+      enabled: true
+      title: "<gradient:#FF4D6D:#FF6B6B:#C1121F>ʟᴏᴜʀꜱᴀ</gradient>"
+      subtitle: "<color:#FFD1D1>Giris yapmak icin dialogu kullaniniz</color>"
+      fade-in: 10
+      stay: 60
+      fade-out: 20
+
+  # === Başarılı giriş sonrası ===
+  login-success:
+    title:
+      enabled: true
+      title: "<color:#FF6B6B>Hos Geldiniz!</color>"
+      subtitle: "<color:#FFD1D1>%player_name%, ʟᴏᴜʀꜱᴀ ᴘʀᴏᴊᴇᴄᴛ'e giris yaptiniz</color>"
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+    sound:
+      enabled: true
+      type: "ENTITY_PLAYER_LEVELUP"
+      volume: 0.7
+      pitch: 1.5
+    actionbar:
+      enabled: true
+      message: "<color:#FF6B6B>✔ Basariyla giris yapildi!</color>"
+
+  # === Başarılı kayıt sonrası ===
+  register-success:
+    title:
+      enabled: true
+      title: "<color:#FFB3C1>Kayit Basarili!</color>"
+      subtitle: "<color:#FFD1D1>%player_name%, hesabiniz olusturuldu</color>"
+      fade-in: 5
+      stay: 40
+      fade-out: 10
+    sound:
+      enabled: true
+      type: "ENTITY_PLAYER_LEVELUP"
+      volume: 0.8
+      pitch: 1.2
+    actionbar:
+      enabled: true
+      message: "<color:#FFB3C1>✔ Hesabiniz basariyla olusturuldu!</color>"
+
+  # === Yanlış şifre girişi ===
+  login-fail:
+    title:
+      enabled: true
+      title: "<color:#FF6B6B>Yanlış Şifre!</color>"
+      subtitle: "<color:#FFD1D1>Tekrar deneyiniz</color>"
+      fade-in: 5
+      stay: 20
+      fade-out: 10
+    sound:
+      enabled: true
+      type: "ENTITY_VILLAGER_NO"
+      volume: 0.8
+      pitch: 1.0
+
+  # === Çıkış yaptığında ===
+  logout:
+    title:
+      enabled: true
+      title: "<color:#E5989B>Cikis Yapildi</color>"
+      subtitle: "<color:#FFD1D1>Tekrar giris yapmaniz gerekmektedir</color>"
+      fade-in: 5
+      stay: 30
+      fade-out: 10
+    sound:
+      enabled: true
+      type: "BLOCK_NOTE_BLOCK_BASS"
+      volume: 0.8
+      pitch: 0.5
+
+# ==================== MESAJLAR ====================
+messages:
+  login:
+    button_password: "Şifre"
+    empty_password: "<color:#FF6B6B>Lütfen şifrenizi giriniz!</color>"
+    wrong_password: "<color:#FF6B6B>Yanlış şifre! Tekrar deneyiniz.</color>"
+    need_register: "<color:#E5989B>Hesap bulunamadi. Lutfen kayit olunuz.</color>"
+    cancelled: "<color:#FF6B6B>Giris islemi iptal edildi.</color>"
+    success: "<color:#FF6B6B>Basariyla giris yaptiniz!</color>"
+    attempts-left: "<color:#E5989B>Kalan deneme hakki: %attempts%</color>"
+
+  register:
+    button_password: "Şifre"
+    confirm_password: "Şifre Tekrar"
+    need_both: "<color:#FF6B6B>Lütfen şifre ve onay alanlarını doldurunuz!</color>"
+    mismatch: "<color:#FF6B6B>Şifreler uyuşmuyor! Tekrar deneyiniz.</color>"
+    too_short: "<color:#FF6B6B>Şifre en az %min% karakter olmalıdır!</color>"
+    too_long: "<color:#FF6B6B>Şifre en fazla %max% karakter olmalıdır!</color>"
+    invalid: "<color:#FF6B6B>Geçersiz şifre!</color>"
+    already: "<color:#E5989B>Zaten kayitlisiniz. Lutfen giris yapiniz.</color>"
+    failed: "<color:#FF6B6B>Kayıt başarısız oldu. Tekrar deneyiniz.</color>"
+    email_required: "<color:#FF6B6B>Lütfen e-posta adresinizi giriniz!</color>"
+    email_invalid: "<color:#FF6B6B>Geçersiz e-posta adresi!</color>"
+    email_already_used: "<color:#FF6B6B>Bu e-posta zaten kullanılmaktadır!</color>"
+    mail_send_failed: "<color:#FF6B6B>Mail gonderilemedi. SMTP ayarlarinizi kontrol edin!</color>"
+    verification_sent: "<color:#FFB3C1>Dogrulama kodu Gmail adresinize gonderildi.</color>"
+    verify_invalid_code: "<color:#FF6B6B>Kod hatali. Tekrar deneyin.</color>"
+    verify_expired: "<color:#FF6B6B>Kodun suresi doldu. /mailkod ile yeni kod alin.</color>"
+    verify_not_pending: "<color:#FF6B6B>Bekleyen bir mail dogrulama kaydi bulunamadi.</color>"
+    verify_usage: "<color:#FFB3C1>Kullanim: /maildogrula <kod></color>"
+    verify_usage_register: "<color:#FFB3C1>Kullanim: /kayit <sifre> <sifre tekrar> <gmail></color>"
+    cancelled: "<color:#FF6B6B>Kayıt işlemi iptal edildi.</color>"
+    success: "<color:#FF6B6B>Basariyla kayit oldunuz!</color>"
+
+  logout:
+    success: "<color:#FF6B6B>Basariyla cikis yaptiniz.</color>"
+    not-logged-in: "<color:#FF6B6B>Zaten giriş yapmamışsınız!</color>"
+
+  changepassword-self:
+    success: "<color:#FF6B6B>Sifreniz basariyla degistirildi!</color>"
+    wrong-old: "<color:#FF6B6B>Eski şifreniz yanlış!</color>"
+    usage: "<gradient:#E5989B:#FFD1D1>Kullanim: /changepassword <eski sifre> <yeni sifre></gradient>"
+    not-registered: "<color:#FF6B6B>Kayıtlı değilsiniz!</color>"
+
+  chat-login:
+    success: "<color:#FF6B6B>Basariyla giris yaptiniz!</color>"
+    usage: "<gradient:#E5989B:#FFD1D1>Kullanim: /login <sifre></gradient>"
+    already: "<color:#E5989B>Zaten giris yapmissiniz!</color>"
+
+  chat-register:
+    success: "<color:#FF6B6B>Basariyla kayit oldunuz!</color>"
+    usage: "<gradient:#E5989B:#FFD1D1>Kullanim: /register <sifre> <sifre tekrar></gradient>"
+    already: "<color:#E5989B>Zaten kayitlisiniz!</color>"
+
+  session:
+    resumed: "<color:#FF6B6B>Oturumunuz devam ediyor, otomatik giris yapildi.</color>"
+
+  # Admin komut mesajları
+  admin:
+    reload: "<color:#FF6B6B>lAuth yapilandirmasi yeniden yuklendi.</color>"
+    no-permission: "<color:#FF6B6B>Bu komutu kullanma yetkiniz yok.</color>"
+    player-only: "<color:#FF6B6B>Bu komut sadece oyuncular tarafından kullanılabilir.</color>"
+    usage: "<color:#E5989B>lAuth Komutlari:</color>"
+    usage-reload: "<gray>/LAuth reload</gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Yapilandirmayi yeniden yukle</color>"
+    usage-open: "<gray>/LAuth ac <giris|kayit></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Dialog ac</color>"
+    usage-unregister: "<gray>/LAuth kayitsil <oyuncu></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Oyuncu kaydini sil</color>"
+    usage-changepassword: "<gray>/LAuth sifredegistir <oyuncu> <yenisifre></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Sifre degistir</color>"
+    usage-logout: "<gray>/cikis</gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Cikis yap</color>"
+    usage-login: "<gray>/giris <sifre></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Giris yap</color>"
+    usage-register: "<gray>/kayit <sifre> <sifre tekrar></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Kayit ol</color>"
+    usage-changepassword-self: "<gray>/sifredegistir <eski> <yeni></gray> <color:#7F1D1D>-</color> <color:#FFD1D1>Sifre degistir</color>"
+    unregister-success: "<color:#FF6B6B>%player% oyuncusunun kaydi silindi.</color>"
+    unregister-fail: "<color:#FF6B6B>%player% oyuncusu bulunamadı.</color>"
+    changepassword-success: "<color:#FF6B6B>%player% oyuncusunun sifresi degistirildi.</color>"
+    changepassword-fail: "<color:#FF6B6B>%player% oyuncusu bulunamadı.</color>"

@@ -1,0 +1,49 @@
+﻿name: lAuth
+version: '${version}'
+main: com.lauth.LAuth
+api-version: '1.20'
+author: Contributors
+description: Authentication system for Minecraft servers
+
+commands:
+  LAuth:
+    description: lAuth yonetim komutlari
+    usage: /<command> reload | ac | cikis | kayitsil | sifredegistir
+    aliases: [ka]
+    permission: LAuth.use
+  giris:
+    description: Giriş yap
+    usage: /<command> <şifre>
+    aliases: [login, l]
+    permission: LAuth.use
+  kayit:
+    description: Kayıt ol
+    usage: /<command> <şifre> <şifre tekrar>
+    aliases: [register, reg]
+    permission: LAuth.use
+  cikis:
+    description: Çıkış yap
+    usage: /<command>
+    aliases: [logout]
+    permission: LAuth.use
+  sifredegistir:
+    description: Şifre değiştir
+    usage: /<command> <eski şifre> <yeni şifre>
+    aliases: [changepassword, cp]
+    permission: LAuth.use
+  maildogrula:
+    description: E-posta kodunu dogrula
+    usage: /<command> <kod>
+    aliases: [verifymail]
+    permission: LAuth.use
+  mailkod:
+    description: E-posta kodunu tekrar gonder
+    usage: /<command>
+    aliases: [resendmail]
+    permission: LAuth.use
+
+permissions:
+  LAuth.use:
+    default: true
+  LAuth.admin:
+    default: op
